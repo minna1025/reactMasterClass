@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 
 interface ContainerProps {
@@ -20,6 +21,10 @@ interface CircleProps {
 }
 
 function Circle({ bgColor, borderColor, text = "default text" }: CircleProps) {
+  //useState 초기값으로 기본 타입을 알아서 추측함. 하지만 다른 타입으로 사용하고 싶을때는 아래처럼하면됨
+  const [counter, setCounter] = useState<number | string>(1);
+  setCounter(2);
+
   return (
     <Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
       {text}
