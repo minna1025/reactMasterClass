@@ -9,7 +9,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 15vh;
+  height: 75px;
   display: flex;
   justify-content: center;
   align-items: center;
