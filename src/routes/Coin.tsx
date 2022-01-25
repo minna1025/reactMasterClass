@@ -38,16 +38,22 @@ interface RouteState {
 function Coin() {
   const { coinId } = useParams<RouteParams>();
   const [loading, setLoading] = useState(true);
-  const [coin, setCoin] = useState<RouteParams>();
   const { state } = useLocation<RouteState>();
+  const [info, setInfo] = useState({});
+  const [priceInfo, setPriceInfo] = useState({});
 
   useEffect(() => {
     (async () => {
-      const response = await fetch(
-        `https://api.coinpaprika.com/#operation/getCoinById`
-      );
-      const json = response.json();
-      console.log(json);
+      const infoData = await (
+        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
+      ).json();
+      setInfo(infoData);
+
+      const priceData = await (
+        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
+      ).json();
+      setPriceInfo(priceData);
+
       setLoading(false);
     })();
   }, []);
