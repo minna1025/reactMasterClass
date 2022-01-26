@@ -4,7 +4,6 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { ThemeProvider } from "styled-components";
 import { light, dark } from "./theme";
 import ThemeToggle from "./ThemeToggle";
-import { useEffect, useState } from "react";
 import { useTheme } from "./useTheme";
 
 const GlobalStyle = createGlobalStyle`
