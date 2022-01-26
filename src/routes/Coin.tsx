@@ -21,6 +21,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
+  position: relative;
   height: 75px;
   display: flex;
   justify-content: center;
@@ -86,6 +87,26 @@ const Tab = styled.span<{ isActive: boolean }>`
   a {
     display: block;
     width: 100%;
+  }
+`;
+
+const Back = styled.span`
+  position: absolute;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: 900;
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    color: ${(props) => props.theme.accentColor};
+    border: 2px solid ${(props) => props.theme.accentColor};
+    border-radius: 50%;
+    padding-top: 4px;
   }
 `;
 
@@ -199,6 +220,9 @@ function Coin() {
         </title>
       </Helmet>
       <Header>
+        <Back>
+          <Link to="/">⬅️</Link>
+        </Back>
         <Title>
           {state ? state?.name : loading ? "Loading..." : infoData?.name}
         </Title>

@@ -31,7 +31,7 @@ function Chart({ coinId }: ChartProps) {
       {isLoading ? (
         "Loading chart...."
       ) : (
-        <ApexChart
+        /* <ApexChart
           type="line"
           series={[{ name: "price", data: data?.map((price) => price.close) }]}
           options={{
@@ -60,6 +60,55 @@ function Chart({ coinId }: ChartProps) {
             tooltip: {
               y: {
                 formatter: (value) => `$ ${value.toFixed(2)}`,
+              },
+            },
+          }}
+        /> */
+        <ApexChart
+          type="candlestick"
+          series={[
+            {
+              data: data?.map((price) => {
+                const obj = {
+                  x: price.time_close,
+                  y: [
+                    price.open.toFixed(2),
+                    price.high.toFixed(2),
+                    price.low.toFixed(2),
+                    price.close.toFixed(2),
+                  ],
+                };
+                return obj;
+              }),
+            },
+          ]}
+          options={{
+            theme: { mode: "dark" },
+            chart: {
+              height: 500,
+              type: "candlestick",
+              background: "transparent",
+            },
+            plotOptions: {
+              candlestick: {
+                wick: {
+                  useFillColor: true,
+                },
+                colors: {
+                  upward: "#3C90EB",
+                  downward: "#DF7D46",
+                },
+              },
+            },
+            tooltip: {
+              enabled: true,
+            },
+            xaxis: {
+              type: "datetime",
+            },
+            yaxis: {
+              tooltip: {
+                enabled: true,
               },
             },
           }}
