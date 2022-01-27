@@ -2,9 +2,10 @@ import { createGlobalStyle } from "styled-components";
 import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ThemeProvider } from "styled-components";
-import { light, dark } from "./theme";
-import ThemeToggle from "./ThemeToggle";
-import { useTheme } from "./useTheme";
+import { lightTheme, darkTheme } from "./theme";
+// import ThemeToggle from "./ThemeToggle";
+// import { useTheme } from "./useTheme";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
   html, body, div, span, applet, object, iframe,
@@ -69,13 +70,16 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 function App() {
-  const [themeMode, toggleTheme] = useTheme();
-  const theme = themeMode === "light" ? light : dark;
+  const [isDark, setIsDark] = useState(true);
+  const toggleDark = () => setIsDark((current) => !current);
+  // const [themeMode, toggleTheme] = useTheme();
+  // const theme = themeMode === "light" ? light : dark;
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <ThemeToggle click={toggleTheme} themeMode={themeMode} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+        <button onClick={toggleDark}>Toggle Mode</button>
+        {/* <ThemeToggle /> */}
         <GlobalStyle />
         <Router />
         <ReactQueryDevtools initialIsOpen={true} />
