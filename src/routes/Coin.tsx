@@ -62,7 +62,7 @@ const OverviewItem = styled.div`
 `;
 
 const Description = styled.p`
-  color: white;
+  color: ${(props) => props.theme.textColor};
   padding: 20px 0;
 `;
 
