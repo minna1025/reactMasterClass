@@ -2,7 +2,7 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import { IToDo, ToDoState } from "../atoms";
 
-function ToDo({ text, category }: IToDo) {
+function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(ToDoState);
   const onClick = (newCategory: IToDo["category"]) => {
     const currentTarget = newCategory;
