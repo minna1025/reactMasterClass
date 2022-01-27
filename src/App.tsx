@@ -3,8 +3,6 @@ import Router from "./Router";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "./theme";
-// import ThemeToggle from "./ThemeToggle";
-// import { useTheme } from "./useTheme";
 import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
@@ -72,20 +70,21 @@ const GlobalStyle = createGlobalStyle`
 function App() {
   const [isDark, setIsDark] = useState(true);
   const toggleDark = () => setIsDark((current) => !current);
-  // const [themeMode, toggleTheme] = useTheme();
-  // const theme = themeMode === "light" ? light : dark;
 
   return (
     <>
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <button onClick={toggleDark}>Toggle Mode</button>
-        {/* <ThemeToggle /> */}
         <GlobalStyle />
-        <Router />
+        <Router isDark={isDark} toggleDark={toggleDark} />
         <ReactQueryDevtools initialIsOpen={true} />
       </ThemeProvider>
     </>
   );
 }
+
+// App (isDark, modifierFn)
+
+// -> Router -> Coins (modifier)
+// -> Router -> Coin -> Chart (isDark)
 
 export default App;
