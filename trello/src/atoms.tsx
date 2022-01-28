@@ -1,19 +1,6 @@
 import { atom, selector } from "recoil";
 
-export const minuteState = atom({
-  key: "minutes",
-  default: 0,
-});
-
-export const hourSelector = selector<number>({
-  key: "hour",
-  get: ({ get }) => {
-    const minutes = get(minuteState);
-    return minutes / 60;
-  },
-  set: ({ set }, newValue) => {
-    // hour에 수를 적으면 minutes의 값을 변환 해주는 기능
-    const minutes = Number(newValue) * 60;
-    set(minuteState, minutes);
-  },
+export const toDoState = atom({
+  key: "toDo",
+  default: ["a", "b", "c", "d", "e", "f"],
 });
