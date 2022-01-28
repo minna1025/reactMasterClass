@@ -4,9 +4,12 @@ import { hourSelector, minuteState } from "./atoms";
 
 function App() {
   const [minutes, setMinutes] = useRecoilState(minuteState);
-  const hours = useRecoilValue(hourSelector);
+  const [hours, setHours] = useRecoilState(hourSelector);
   const onMinutesChange = (event: React.FormEvent<HTMLInputElement>) => {
     setMinutes(+event.currentTarget.value); // +를 붙여 스트링을 넘버타입으로 변환
+  };
+  const onHoursChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setHours(+event.currentTarget.value);
   };
 
   return (
@@ -17,8 +20,12 @@ function App() {
         type="number"
         placeholder="Minutes"
       />
-      <input value={hours} type="number" placeholder="Hours" />
-      {/* onChange 이벤트가 없다면 리드온리 인풋임! */}
+      <input
+        value={hours}
+        onChange={onHoursChange}
+        type="number"
+        placeholder="Hours"
+      />
     </div>
   );
 }
