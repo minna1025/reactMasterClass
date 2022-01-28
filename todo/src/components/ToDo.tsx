@@ -10,13 +10,11 @@ function ToDo({ text, category, id }: IToDo) {
       const targetIndex = oldToDos.findIndex((todo) => todo.id === id); // props id와 비교
       const oldToDo = oldToDos[targetIndex];
       const newToDo = { text, id, category: currentTarget };
-      console.log(
-        "replace ther to do in the index : ",
-        targetIndex,
-        "with",
-        newToDo
-      );
-      return oldToDos;
+      return [
+        ...oldToDos.slice(0, targetIndex),
+        newToDo,
+        ...oldToDos.slice(targetIndex + 1),
+      ];
     });
   };
   /* const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
