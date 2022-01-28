@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, DefaultValue, selector } from "recoil";
 
 // type categories = "TO_DO" | "DOING" | "DONE";
 export enum Categories {
@@ -13,14 +13,33 @@ export interface IToDo {
   category: Categories;
 }
 
+const localStorageEffect =
+  (key: any) =>
+  ({ setSelf, onSet }: any) => {
+    const savedValue = localStorage.getItem(key);
+    if (savedValue !== null) {
+      setSelf(JSON.parse(savedValue));
+    }
+
+    onSet((newValue: IToDo) => {
+      if (newValue instanceof DefaultValue) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, JSON.stringify(newValue));
+      }
+    });
+  };
+
 export const categoryState = atom<Categories>({
   key: "category",
   default: Categories.TO_DO,
+  effects_UNSTABLE: [localStorageEffect("slectedCategory")],
 });
 
 export const ToDoState = atom<IToDo[]>({
   key: "ToDo",
   default: [],
+  effects_UNSTABLE: [localStorageEffect("todoList")],
 });
 
 export const toDoSelector = selector({

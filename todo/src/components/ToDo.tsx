@@ -1,4 +1,3 @@
-import React from "react";
 import { useSetRecoilState } from "recoil";
 import { Categories, IToDo, ToDoState } from "../atoms";
 
@@ -21,6 +20,12 @@ function ToDo({ text, category, id }: IToDo) {
   console.log('i wanna go', event.currentTarget.name)
   } */
 
+  const deleteToDo = (id: number) => {
+    setToDos((oldToDos) => {
+      return oldToDos.filter((todo) => todo.id !== id);
+    });
+  };
+
   return (
     <li>
       {text}
@@ -34,6 +39,7 @@ function ToDo({ text, category, id }: IToDo) {
       {category !== Categories.DONE && (
         <button onClick={() => onClick(Categories.DONE)}>Done</button>
       )}
+      <button onClick={() => deleteToDo(id)}>🗑️</button>
     </li>
   );
 }
