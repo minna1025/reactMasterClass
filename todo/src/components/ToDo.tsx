@@ -6,7 +6,18 @@ function ToDo({ text, category, id }: IToDo) {
   const setToDos = useSetRecoilState(ToDoState);
   const onClick = (newCategory: IToDo["category"]) => {
     const currentTarget = newCategory;
-    console.log(newCategory);
+    setToDos((oldToDos) => {
+      const targetIndex = oldToDos.findIndex((todo) => todo.id === id); // props id와 비교
+      const oldToDo = oldToDos[targetIndex];
+      const newToDo = { text, id, category: currentTarget };
+      console.log(
+        "replace ther to do in the index : ",
+        targetIndex,
+        "with",
+        newToDo
+      );
+      return oldToDos;
+    });
   };
   /* const onClick = (event:React.MouseEvent<HTMLButtonElement>) => {
     const { currentTarget: {name} } = event;
