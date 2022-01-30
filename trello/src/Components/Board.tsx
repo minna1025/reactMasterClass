@@ -2,8 +2,9 @@ import { Droppable } from "react-beautiful-dnd";
 import { useForm } from "react-hook-form";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ITodo, toDoState } from "../atoms";
+import { IDroppableProps, ITodo, toDoState } from "../atoms";
 import DraggableCard from "./DragabbleCard";
+import { BsTrash } from "react-icons/bs";
 
 const Wrapper = styled.div`
   width: 300px;
@@ -22,12 +23,12 @@ const Title = styled.h2`
   font-size: 18px;
 `;
 
-const Area = styled.div<IAreaProps>`
+const Area = styled.div<IDroppableProps>`
   background-color: ${(props) =>
     props.isDraggingOver
-      ? "#dfe6e9"
+      ? "#C9CCD5"
       : props.isDraggingFromThis
-      ? "#b2bec3"
+      ? "#E4D8DC"
       : "transparent"};
   flex-grow: 1;
   transition: background-color 0.3s ease-in-out;
@@ -36,19 +37,37 @@ const Area = styled.div<IAreaProps>`
 
 const Form = styled.form`
   width: 100%;
+  text-align: center;
+
   input {
-    width: 100%;
+    width: 80%;
+    margin: 0 auto;
+    background-color: #c9ccd5;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+`;
+
+const Trash = styled.div<IDroppableProps>`
+  grid-column: 1/4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto 0;
+  width: 300px;
+  font-size: 80px;
+  color: ${(props) => (props.isDraggingOver ? "#FFE3E3" : "gray")};
+
+  div {
+    display: none;
+    width: 0;
   }
 `;
 
 interface IBoardProps {
   toDos: ITodo[];
   boardId: string;
-}
-
-interface IAreaProps {
-  isDraggingFromThis: boolean;
-  isDraggingOver: boolean;
 }
 
 interface IForm {
@@ -73,35 +92,52 @@ function Board({ toDos, boardId }: IBoardProps) {
   };
 
   return (
-    <Wrapper>
-      <Title>{boardId}</Title>
-      <Form onSubmit={handleSubmit(onValid)}>
-        <input
-          {...register("toDo", { required: true })}
-          type="text"
-          placeholder={`ADd task on ${boardId}`}
-        />
-      </Form>
-      <Droppable droppableId={boardId}>
-        {(magic, snapshop) => (
-          <Area
-            isDraggingOver={snapshop.isDraggingOver}
-            isDraggingFromThis={Boolean(snapshop.draggingFromThisWith)}
-            ref={magic.innerRef}
-            {...magic.droppableProps}>
-            {toDos.map((toDo, index) => (
-              <DraggableCard
-                key={toDo.id}
-                index={index}
-                toDoId={toDo.id}
-                toDoText={toDo.text}
-              />
-            ))}
-            {magic.placeholder}
-          </Area>
-        )}
-      </Droppable>
-    </Wrapper>
+    <>
+      {boardId !== "Trash" ? (
+        <Wrapper>
+          <Title>{boardId}</Title>
+          <Form onSubmit={handleSubmit(onValid)}>
+            <input
+              {...register("toDo", { required: true })}
+              type="text"
+              placeholder={`Add task on ${boardId}`}
+            />
+          </Form>
+          <Droppable droppableId={boardId}>
+            {(magic, snapshop) => (
+              <Area
+                isDraggingOver={snapshop.isDraggingOver}
+                isDraggingFromThis={Boolean(snapshop.draggingFromThisWith)}
+                ref={magic.innerRef}
+                {...magic.droppableProps}>
+                {toDos.map((toDo, index) => (
+                  <DraggableCard
+                    key={toDo.id}
+                    index={index}
+                    toDoId={toDo.id}
+                    toDoText={toDo.text}
+                  />
+                ))}
+                {magic.placeholder}
+              </Area>
+            )}
+          </Droppable>
+        </Wrapper>
+      ) : (
+        <Droppable droppableId="Trash">
+          {(magic, snapshot) => (
+            <Trash
+              isDraggingOver={snapshot.isDraggingOver}
+              isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+              ref={magic.innerRef}
+              {...magic.droppableProps}>
+              <BsTrash />
+              {/* {magic.placeholder} */}
+            </Trash>
+          )}
+        </Droppable>
+      )}
+    </>
   );
 }
 

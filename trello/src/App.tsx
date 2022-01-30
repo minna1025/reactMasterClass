@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 680px;
+  max-width: 1000px;
   width: 100%;
   height: 100vh;
   margin: 0 auto;
@@ -19,12 +19,14 @@ const Boards = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
   width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if (!destination) return;
     if (destination?.droppableId === source.droppableId) {
       // same board movement

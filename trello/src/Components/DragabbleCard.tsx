@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Card = styled.div<{ isDragging: boolean }>`
   padding: 10px;
   background-color: ${(props) =>
-    props.isDragging ? "#74b9ff" : props.theme.cardColor};
+    props.isDragging ? "#93B5C6" : props.theme.cardColor};
   box-shadow: ${(props) =>
     props.isDragging ? "0 2px 5px rgba(0, 0, 0, 0.2)" : "none"};
   border-radius: 5px;
