@@ -60,6 +60,11 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
+  input, select {
+    width: 100%;
+    padding: 5px;
+  }
+  button {padding:5px 10px;}
 `;
 
 export default GlobalStyle;

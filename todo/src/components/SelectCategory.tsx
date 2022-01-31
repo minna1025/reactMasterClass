@@ -1,20 +1,33 @@
-import { useRecoilState } from "recoil";
-import { Categories, categoryState } from "../atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import styled from "styled-components";
+import { CategoryListState, categoryState } from "../atoms";
+
+const Form = styled.form`
+  margin: 5px 0 20px;
+
+  select {
+    width: 100%;
+    padding: 5px;
+  }
+`;
 
 function SelectCategory() {
-  const [category, setCategory] = useRecoilState(categoryState);
+  const [SelectedCategory, setCategorySelect] = useRecoilState(categoryState);
+  const categoryList = useRecoilValue(CategoryListState);
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
-    setCategory(event.currentTarget.value as any);
+    setCategorySelect(event.currentTarget.value as any);
   };
 
   return (
-    <form>
-      <select value={category} onInput={onInput}>
-        <option value={Categories.TO_DO}>To Do</option>
-        <option value={Categories.DOING}>Doing</option>
-        <option value={Categories.DONE}>Done</option>
+    <Form>
+      <select value={SelectedCategory} onInput={onInput}>
+        {categoryList.map((category, index) => (
+          <option key={index} value={category.name}>
+            {category.name}
+          </option>
+        ))}
       </select>
-    </form>
+    </Form>
   );
 }
 export default SelectCategory;
