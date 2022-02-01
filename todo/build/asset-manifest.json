@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/reactMasterClass/todo/build/static/js/main.881c2a7a.js",
-    "index.html": "/reactMasterClass/todo/build/index.html",
-    "main.881c2a7a.js.map": "/reactMasterClass/todo/build/static/js/main.881c2a7a.js.map"
+    "main.js": "./todo/build/static/js/main.5831193c.js",
+    "index.html": "./todo/build/index.html",
+    "main.5831193c.js.map": "./todo/build/static/js/main.5831193c.js.map"
   },
   "entrypoints": [
-    "static/js/main.881c2a7a.js"
+    "static/js/main.5831193c.js"
   ]
 }
