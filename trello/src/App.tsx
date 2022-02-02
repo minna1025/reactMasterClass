@@ -1,7 +1,7 @@
-import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { DragDropContext, Droppable, DropResult } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { toDoState } from "./atoms";
+import { IDroppableProps, toDoState } from "./atoms";
 import Board from "./Components/Board";
 
 const Wrapper = styled.div`
@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
-const Boards = styled.div`
+const Boards = styled.div<IDroppableProps>`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -26,8 +26,10 @@ const Boards = styled.div`
 function App() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = (info: DropResult) => {
+    console.log(info);
     const { destination, source } = info;
     if (!destination) return;
+    if (source.droppableId === "boardDroppable") return;
     if (destination?.droppableId === source.droppableId) {
       // same board movement
       setToDos((allboard) => {
@@ -65,11 +67,25 @@ function App() {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
-        <Boards>
-          {Object.keys(toDos).map((boardId) => (
-            <Board boardId={boardId} key={boardId} toDos={toDos[boardId]} />
-          ))}
-        </Boards>
+        <Droppable droppableId="boardDroppable" type="board">
+          {(provi, snapshot) => (
+            <Boards
+              isDraggingOver={snapshot.isDraggingOver}
+              isDraggingFromThis={Boolean(snapshot.draggingFromThisWith)}
+              ref={provi.innerRef}
+              {...provi.droppableProps}>
+              {Object.keys(toDos).map((boardId, index) => (
+                <Board
+                  boardId={boardId}
+                  key={boardId}
+                  toDos={toDos[boardId]}
+                  index={index}
+                />
+              ))}
+              {provi.placeholder}
+            </Boards>
+          )}
+        </Droppable>
       </Wrapper>
     </DragDropContext>
   );

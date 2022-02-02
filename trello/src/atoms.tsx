@@ -1,4 +1,4 @@
-import { atom, DefaultValue, selector } from "recoil";
+import { atom, DefaultValue } from "recoil";
 
 export interface ITodo {
   id: number;
