@@ -45,7 +45,7 @@ function App() {
         <Box
           drag
           dragSnapToOrigin // 드래그 후 원자세로 다시 백
-          dragElastic={0.5}
+          dragElastic={0.5} // 중심으로 끌어당시는 힘. 1은 약하고, 0.5는 강함 0은 정해진 비걸박스안에만 머무름
           dragConstraints={biggerBoxRef}
           variants={boxVariants}
           whileHover="hover"
