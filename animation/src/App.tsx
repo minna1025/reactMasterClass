@@ -1,6 +1,6 @@
 import GlobalStyle from "./GlobalStyle";
 import styled from "styled-components";
-import { motion, useMotionValue } from "framer-motion";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect } from "react";
 
 const Wrapper = styled.div`
@@ -21,13 +21,19 @@ const Box = styled(motion.div)`
 
 function App() {
   const x = useMotionValue(0);
+  const scale = useTransform(x, [-800, 0, 800], [2, 1, 0.1]); // (받아올 값, 검토할 값, 출력할 값)
+
+  useEffect(() => {
+    scale.onChange(() => {
+      console.log(scale.get());
+    });
+  }, [x]);
 
   return (
     <Wrapper>
       <GlobalStyle />
-      <button onClick={() => x.set(200)}>click me</button>
       <Box
-        style={{ x }}
+        style={{ x, scale }}
         drag="x"
         dragSnapToOrigin // 드래그 후 원자세로 다시 백
       ></Box>
