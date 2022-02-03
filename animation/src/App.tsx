@@ -18,15 +18,20 @@ const Box = styled(motion.div)`
   box-shadow: 0 20px 3px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.06);
 `;
 
+const myVars = {
+  start: { scale: 0 },
+  end: {
+    scale: 1,
+    retateZ: 360,
+    transition: { type: "spring", delay: 1 },
+  },
+};
+
 function App() {
   return (
     <Wrapper>
       <GlobalStyle />
-      <Box
-        transition={{ type: "spring", delay: 1, bounce: 0.5 }}
-        initial={{ scale: 0 }} // 초기값
-        animate={{ scale: 1, rotateZ: 360 }}
-      />
+      <Box variants={myVars} initial="start" animate="end" />
     </Wrapper>
   );
 }
