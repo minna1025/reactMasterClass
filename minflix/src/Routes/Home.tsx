@@ -1,5 +1,7 @@
 function Home() {
-  return null;
+  return (
+    <div style={{ backgroundColor: "whitesmoke", height: "200vh" }}>home</div>
+  );
 }
 
 export default Home;
