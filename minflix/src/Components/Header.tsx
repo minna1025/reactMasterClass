@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { Link, useMatch } from "react-router-dom";
 import styled from "styled-components";
 
@@ -62,7 +63,7 @@ const Search = styled.form`
   }
 `;
 
-const Circle = styled.span`
+const Circle = styled(motion.span)`
   position: absolute;
   width: 5px;
   height: 5px;
@@ -75,10 +76,9 @@ const Circle = styled.span`
 `;
 
 const Input = styled(motion.input)`
-  z-index: -1;
   transform-origin: right center;
   position: absolute;
-  right: 0;
+  left: -150px;
 `;
 
 const logoVariants = {
@@ -94,8 +94,10 @@ const logoVariants = {
 };
 
 function Header() {
+  const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
   const tvMatch = useMatch("/tv");
+  const toggleSearch = () => setSearchOpen((prev) => !prev);
 
   return (
     <Nav>
@@ -117,13 +119,13 @@ function Header() {
           <Item>
             <Link to="/">
               Home
-              {homeMatch?.pathname === "/" && <Circle />}
+              {homeMatch?.pathname === "/" && <Circle layoutId="circle" />}
             </Link>
           </Item>
           <Item>
             <Link to="/tv">
               Tv Shows
-              {tvMatch?.pathname === "/tv" && <Circle />}
+              {tvMatch?.pathname === "/tv" && <Circle layoutId="circle" />}
             </Link>
           </Item>
         </Items>
@@ -131,8 +133,8 @@ function Header() {
       <Col>
         <Search>
           <motion.svg
-            // onClick={false}
-            animate={{}}
+            onClick={toggleSearch}
+            animate={{ x: searchOpen ? -180 : 0 }}
             transition={{ type: "linear" }}
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -144,8 +146,7 @@ function Header() {
           </motion.svg>
           <Input
             // {...register("keyword", { required: true, minLength: 2 })}
-            animate={false}
-            initial={{ scaleX: 0 }}
+            animate={{ scaleX: searchOpen ? 1 : 0 }}
             transition={{ type: "linear" }}
             placeholder="Search for movie or tv show..."
           />
