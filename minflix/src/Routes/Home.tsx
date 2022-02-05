@@ -7,6 +7,7 @@ import { makeImagePath } from "../libs";
 
 const Wrapper = styled.div`
   background-color: black;
+  padding-bottom: 200px;
 `;
 
 const Loader = styled.div`
@@ -45,30 +46,33 @@ const Slider = styled.div`
 const Row = styled(motion.div)`
   position: absolute;
   display: grid;
-  gap: 10px;
+  gap: 5px;
   grid-template-columns: repeat(6, 1fr);
   width: 100%;
-  margin-bottom: 5px;
 `;
 
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{ bgPhoto: string }>`
   background-color: white;
+  background-image: url(${(props) => props.bgPhoto});
+  background-size: cover;
+  background-position: center center;
   height: 200px;
-  color: red;
   font-size: 66px;
 `;
 
 const rowVariants = {
   hidden: {
-    x: window.outerWidth + 10, // 사용자의 윈도우 너비 + gap
+    x: window.outerWidth + 5, // 사용자의 윈도우 너비 + gap
   },
   visible: {
     x: 0,
   },
   exit: {
-    x: -window.outerWidth - 10,
+    x: -window.outerWidth - 5,
   },
 };
+
+const offset = 6;
 
 function Home() {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
@@ -77,7 +81,20 @@ function Home() {
   );
 
   const [index, setIndex] = useState(0);
-  const increaseIndex = () => setIndex((prev) => prev + 1);
+  const [leaving, setLeaving] = useState(false); // 다중 클릭 했을 시 애니매이션이 중복 되는 것을 조정(애니메이션 아웃을 완료하면 다음 실행)
+  const increaseIndex = () => {
+    if (data) {
+      if (leaving) return;
+      toggleLeaving();
+      setLeaving(true);
+      const totalMovie = data?.results.length - 1; // 메인 영화 1개 뺌
+      const maxIndex = Math.floor(totalMovie / offset); // ceil : 내림, floor: 버림
+      console.log("maxIndex: ", maxIndex, index);
+      setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
+    }
+  };
+
+  const toggleLeaving = () => setLeaving(false);
 
   return (
     <Wrapper>
@@ -92,7 +109,11 @@ function Home() {
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
           <Slider>
-            <AnimatePresence>
+            {
+              // initial={false}를 사용해 첫 로딩 시 슬라이드가 정지해져 있는 모습으로 시작}
+              // onExitComplete을 사용해 leaving을 false로  셋팅 해줘서 한번클릭후 애니메이션이 작동하지 않는 것을 수정
+            }
+            <AnimatePresence initial={false} onExitComplete={toggleLeaving}>
               <Row
                 variants={rowVariants}
                 initial="hidden"
@@ -100,9 +121,15 @@ function Home() {
                 exit="exit"
                 transition={{ type: "tween", duration: 1 }}
                 key={index}>
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Box key={i}>{i}</Box>
-                ))}
+                {data?.results
+                  .slice(1)
+                  .slice(offset * index, offset * index + offset)
+                  .map((movie) => (
+                    <Box
+                      key={movie.id}
+                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                    />
+                  ))}
               </Row>
             </AnimatePresence>
           </Slider>
