@@ -51,13 +51,21 @@ const Row = styled(motion.div)`
   width: 100%;
 `;
 
-const Box = styled(motion.div)<{ bgPhoto: string }>`
+const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
-  background-image: url(${(props) => props.bgPhoto});
+  background-image: url(${(props) => props.bgphoto});
   background-size: cover;
   background-position: center center;
   height: 200px;
   font-size: 66px;
+
+  &:first-child {
+    transform-origin: center left;
+  }
+
+  &:last-child {
+    transform-origin: center right;
+  }
 `;
 
 const rowVariants = {
@@ -69,6 +77,22 @@ const rowVariants = {
   },
   exit: {
     x: -window.outerWidth - 5,
+  },
+};
+
+const BoxVariants = {
+  normal: {
+    scale: 1,
+  },
+  hover: {
+    scale: 1.3,
+    y: -50,
+
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+      type: "tween",
+    },
   },
 };
 
@@ -89,7 +113,6 @@ function Home() {
       setLeaving(true);
       const totalMovie = data?.results.length - 1; // 메인 영화 1개 뺌
       const maxIndex = Math.floor(totalMovie / offset); // ceil : 내림, floor: 버림
-      console.log("maxIndex: ", maxIndex, index);
       setIndex((prev) => (prev === maxIndex ? 0 : prev + 1));
     }
   };
@@ -127,7 +150,11 @@ function Home() {
                   .map((movie) => (
                     <Box
                       key={movie.id}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      whileHover="hover"
+                      initial="normal"
+                      variants={BoxVariants}
+                      transition={{ type: "tween" }}
+                      bgphoto={makeImagePath(movie.backdrop_path, "w500")}
                     />
                   ))}
               </Row>
