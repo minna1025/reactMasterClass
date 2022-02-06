@@ -1,13 +1,15 @@
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useQuery } from "react-query";
 import { useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getMovies, IGetTopMovieResult } from "../api";
+import { getGenres, getMovies, IGenres, IGetTopMovieResult } from "../api";
 import { makeImagePath } from "../libs";
 import ModalMovieInfo from "../Components/ModalMovieInfo";
 import Slider from "../Components/Slider";
 import Trailer from "../Components/Trailer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { Genres } from "../atoms";
 
 const Wrapper = styled.div`
   position: relative;
@@ -53,7 +55,7 @@ const Banner = styled.div`
 const SliderWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: -200px;
+  margin-top: -170px;
 
   > div {
     margin: 3vw 0;
@@ -85,14 +87,18 @@ const Overview = styled.p`
 
 function Home() {
   const { data: topMoviesData, isLoading: isTopMovieLoading } =
-    useQuery<IGetTopMovieResult>(["movies", "popular"], () =>
-      getMovies("popular")
-    );
+    useQuery<IGetTopMovieResult>(["", ""], () => getMovies("popular"));
+
+  const { data: genresList, isLoading: isGenresLoading } = useQuery<IGenres>(
+    [],
+    () => getGenres()
+  );
+  const [, setGenres] = useRecoilState(Genres);
 
   const bigMovieMatch = useMatch("/movies/:movieId");
   const clickedMovie = bigMovieMatch?.params.movieId;
 
-  const [isClicked, setIsClicked] = useState(false);
+  const [, setIsClicked] = useState(false);
   const history = useNavigate();
 
   const onOverlayClick = () => {
@@ -101,6 +107,12 @@ function Home() {
   };
 
   const toggleisClicked = () => setIsClicked((prev) => !prev);
+
+  useEffect(() => {
+    if (!isGenresLoading) {
+      setGenres(genresList?.genres);
+    }
+  }, [isGenresLoading]);
 
   return (
     <Wrapper>

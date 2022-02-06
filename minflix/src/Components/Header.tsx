@@ -170,12 +170,12 @@ function Header() {
         <Items>
           <Item>
             <Link to="/">
-              홈{homeMatch?.pathname === "/" && <Circle layoutId="circle" />}
+              Home{homeMatch?.pathname === "/" && <Circle layoutId="circle" />}
             </Link>
           </Item>
           <Item>
             <Link to="/tv">
-              영화
+              TV Shows
               {tvMatch?.pathname === "/tv" && <Circle layoutId="circle" />}
             </Link>
           </Item>

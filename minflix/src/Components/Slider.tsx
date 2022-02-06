@@ -1,13 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { getMovies, IGetMoviesResult } from "../api";
+import { getMovies, IGenres, IGetMoviesResult } from "../api";
+import { Genres } from "../atoms";
 import Slide from "./Slide";
 
 const Wrapper = styled.div`
   position: relative;
-  min-height: 200px;
+  min-height: 145px;
   height: 100%;
 
   > h2 {
@@ -29,6 +31,7 @@ const Row = styled(motion.div)`
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
   width: 100%;
+  height: 145px;
 `;
 
 const ButtonNext = styled(motion.div)`
@@ -39,7 +42,7 @@ const ButtonNext = styled(motion.div)`
   align-items: center;
   justify-content: center;
   width: 40px;
-  height: 200px;
+  height: 145px;
   cursor: pointer;
   bottom: 0;
   font-size: 70px;
@@ -70,7 +73,7 @@ const rowVariants = {
 const NextVariants = {
   hover: {
     background:
-      "linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7))",
+      "linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5))",
   },
   exite: { background: "transparent" },
 };
@@ -99,13 +102,15 @@ function Slider({ sliderTitle, sliderType }: ISlider) {
 
   const toggleLeaving = () => setLeaving(false);
 
+  const genres = useRecoilValue<IGenres>(Genres);
+
   return (
     <Wrapper>
+      <h2>{sliderTitle}</h2>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <h2>{sliderTitle}</h2>
           {
             // initial={false}를 사용해 첫 로딩 시 슬라이드가 정지해져 있는 모습으로 시작}
             // onExitComplete을 사용해 leaving을 false로 셋팅 해줘서 한번클릭 후 애니메이션이 작동하지 않는 것을 수정
@@ -123,14 +128,19 @@ function Slider({ sliderTitle, sliderType }: ISlider) {
                     .slice(data?.results.length % 3 === 1 ? 1 : 2)
                     .slice(offset * index, offset * index + offset)
                     .map((movie) => (
-                      <Slide
-                        sliderType={sliderType}
-                        key={sliderType + movie.id}
-                        id={movie.id}
-                        title={movie.title}
-                        bgImage={movie.backdrop_path}
-                        bgSize={"w500"}
-                      />
+                      <>
+                        <Slide
+                          sliderType={sliderType}
+                          key={sliderType + movie.id}
+                          id={movie.id}
+                          title={movie.title}
+                          bgImage={movie.backdrop_path}
+                          bgSize={"w500"}
+                          genres={movie.genre_ids.map(
+                            (id) => genres.find((i) => i.id === id).name
+                          )}
+                        />
+                      </>
                     ))
                 : null}
             </Row>
