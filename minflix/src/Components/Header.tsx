@@ -5,6 +5,7 @@ import { Link, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Nav = styled(motion.nav)`
+  z-index: 999;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -169,13 +170,12 @@ function Header() {
         <Items>
           <Item>
             <Link to="/">
-              Home
-              {homeMatch?.pathname === "/" && <Circle layoutId="circle" />}
+              홈{homeMatch?.pathname === "/" && <Circle layoutId="circle" />}
             </Link>
           </Item>
           <Item>
             <Link to="/tv">
-              Tv Shows
+              영화
               {tvMatch?.pathname === "/tv" && <Circle layoutId="circle" />}
             </Link>
           </Item>

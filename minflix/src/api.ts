@@ -1,12 +1,26 @@
 export const API_KEY = "6168f76b6e8e811fa14c2c1d50c8ec66";
 const BASE_PATH = "https://api.themoviedb.org/3";
 
-interface IMovie {
+export interface IMovie {
   id: number;
   backdrop_path: string;
   poster_path: string;
   title: string;
   overview: string;
+}
+export interface IGetTopMovieResult {
+  results: IMovie[];
+}
+
+interface IVideoResult {
+  name: string;
+  key: string;
+  id: string;
+}
+
+export interface IVideo {
+  id: number;
+  results: IVideoResult[];
 }
 
 export interface IGetMoviesResult {
@@ -20,8 +34,41 @@ export interface IGetMoviesResult {
   total_results: number;
 }
 
-export function getMovies() {
+export interface IDetail {
+  adult: boolean;
+  backdrop_path: string;
+  genres?: {
+    id: number;
+    name: string;
+  };
+  id: number;
+  popularity: number;
+  release_date: string;
+  spoken_languages?: [
+    {
+      name: string;
+      iseo_639_1: string;
+    }
+  ];
+  tagline: string;
+  title: string;
+  vote_average: number;
+}
+
+export function getMovies(movieType: string) {
   return fetch(
-    `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=ko`
+    `${BASE_PATH}/movie/${movieType}?api_key=${API_KEY}&language=ko`
+  ).then((response) => response.json());
+}
+
+export function getVideo(movieId: number) {
+  return fetch(
+    `${BASE_PATH}/movie/${movieId}/videos?api_key=${API_KEY}&language=ko`
+  ).then((response) => response.json());
+}
+
+export function getDetail(movieId: number) {
+  return fetch(
+    `${BASE_PATH}/movie/${movieId}?api_key=${API_KEY}&language=ko`
   ).then((response) => response.json());
 }
