@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { isAbsolute } from "path/posix";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { makeImagePath } from "../libs";
+import { Rating } from "react-simple-star-rating";
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -47,8 +47,17 @@ const Info = styled(motion.div)`
   }
 
   li {
-    font-size: 14px;
+    font-size: 10px;
   }
+`;
+
+const RatingWrap = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding-left: 20px;
+  font-size: 12px;
 `;
 
 interface IBoxProps {
@@ -58,6 +67,8 @@ interface IBoxProps {
   bgSize: string;
   sliderType: string;
   genres?: any;
+  voteAverage?: number;
+  type: string;
 }
 
 const boxVariants = {
@@ -91,10 +102,19 @@ const infoVariants = {
   },
 };
 
-function Slide({ id, title, bgImage, bgSize, sliderType, genres }: IBoxProps) {
+function Slide({
+  id,
+  title,
+  bgImage,
+  bgSize,
+  sliderType,
+  genres,
+  voteAverage,
+  type,
+}: IBoxProps) {
   const history = useNavigate();
-  const onBoxClicked = (id: number) => {
-    history(`/movies/${id}`);
+  const onBoxClicked = (id: number, type: string) => {
+    history(`/${type}/${id}`);
   };
 
   return (
@@ -106,9 +126,19 @@ function Slide({ id, title, bgImage, bgSize, sliderType, genres }: IBoxProps) {
         variants={boxVariants}
         transition={{ type: "tween" }}
         bgphoto={makeImagePath(bgImage, bgSize)}
-        onClick={() => onBoxClicked(id)}>
+        onClick={() => onBoxClicked(id, type)}>
         <Info variants={infoVariants}>
           <h4>{title}</h4>
+          {voteAverage ? (
+            <RatingWrap>
+              {voteAverage}
+              <Rating
+                readonly
+                ratingValue={voteAverage ? voteAverage * 10 : 0}
+                size={17}
+              />
+            </RatingWrap>
+          ) : null}
           <ul>
             {genres.map((genre: string) => (
               <li key={genre}>{genre}</li>

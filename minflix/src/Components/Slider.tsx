@@ -1,10 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { useRecoilValue } from "recoil";
+import { useLocation } from "react-router-dom";
+import { useRecoilValue, useResetRecoilState } from "recoil";
 import styled from "styled-components";
-import { getMovies, IGenres, IGetMoviesResult } from "../api";
-import { Genres } from "../atoms";
+import {
+  getGenres,
+  getMovies,
+  IGenres,
+  IGetMoviesResult,
+  IGetTvResult,
+} from "../api";
+import { GenresTv, Genresmovie } from "../atoms";
 import Slide from "./Slide";
 
 const Wrapper = styled.div`
@@ -52,6 +59,7 @@ const ButtonNext = styled(motion.div)`
 interface ISlider {
   sliderTitle: string;
   sliderType: string;
+  type: string;
 }
 
 const rowVariants = {
@@ -80,10 +88,10 @@ const NextVariants = {
 
 const offset = 6;
 
-function Slider({ sliderTitle, sliderType }: ISlider) {
+function Slider({ sliderTitle, sliderType, type }: ISlider) {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
-    [sliderType + "movies", sliderType],
-    () => getMovies(sliderType)
+    [sliderType + type, type],
+    () => getMovies(type, sliderType)
   );
 
   const [index, setIndex] = useState(0);
@@ -102,7 +110,9 @@ function Slider({ sliderTitle, sliderType }: ISlider) {
 
   const toggleLeaving = () => setLeaving(false);
 
-  const genres = useRecoilValue<IGenres>(Genres);
+  const genresList = useRecoilValue<IGenres>(
+    type !== "movie" ? GenresTv : Genresmovie
+  );
 
   return (
     <Wrapper>
@@ -128,19 +138,20 @@ function Slider({ sliderTitle, sliderType }: ISlider) {
                     .slice(data?.results.length % 3 === 1 ? 1 : 2)
                     .slice(offset * index, offset * index + offset)
                     .map((movie) => (
-                      <>
-                        <Slide
-                          sliderType={sliderType}
-                          key={sliderType + movie.id}
-                          id={movie.id}
-                          title={movie.title}
-                          bgImage={movie.backdrop_path}
-                          bgSize={"w500"}
-                          genres={movie.genre_ids.map(
-                            (id) => genres.find((i) => i.id === id).name
-                          )}
-                        />
-                      </>
+                      <Slide
+                        sliderType={sliderType}
+                        key={sliderType + movie.id}
+                        id={movie.id}
+                        title={type === "movie" ? movie.title : movie.name}
+                        bgImage={movie.backdrop_path}
+                        bgSize={"w500"}
+                        voteAverage={movie.vote_average}
+                        type={type}
+                        genres={movie.genre_ids.map(
+                          (id) =>
+                            genresList.find((genre) => genre.id === id).name
+                        )}
+                      />
                     ))
                 : null}
             </Row>

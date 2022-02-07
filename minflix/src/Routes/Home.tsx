@@ -1,6 +1,6 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useQuery } from "react-query";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getGenres, getMovies, IGenres, IGetTopMovieResult } from "../api";
 import { makeImagePath } from "../libs";
@@ -9,12 +9,12 @@ import Slider from "../Components/Slider";
 import Trailer from "../Components/Trailer";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { Genres } from "../atoms";
+import { Genresmovie } from "../atoms";
 
 const Wrapper = styled.div`
   position: relative;
   width: 100vw;
-  overflow: hidden;
+  overflow-x: hidden;
   background-color: black;
   padding-bottom: 200px;
 `;
@@ -70,11 +70,12 @@ const Title = styled.h2`
 `;
 
 const Overlay = styled(motion.div)`
+  z-index: 0;
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: -webkit-fill-available;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
 `;
@@ -86,27 +87,20 @@ const Overview = styled.p`
 `;
 
 function Home() {
+  const location = useLocation();
   const { data: topMoviesData, isLoading: isTopMovieLoading } =
-    useQuery<IGetTopMovieResult>(["", ""], () => getMovies("popular"));
+    useQuery<IGetTopMovieResult>("movieData", () =>
+      getMovies("movie", "popular")
+    );
 
   const { data: genresList, isLoading: isGenresLoading } = useQuery<IGenres>(
-    [],
-    () => getGenres()
+    ["genresMovie", location],
+    () => getGenres("movie")
   );
-  const [, setGenres] = useRecoilState(Genres);
+  const [, setGenres] = useRecoilState(Genresmovie);
 
-  const bigMovieMatch = useMatch("/movies/:movieId");
+  const bigMovieMatch = useMatch("/movie/:movieId");
   const clickedMovie = bigMovieMatch?.params.movieId;
-
-  const [, setIsClicked] = useState(false);
-  const history = useNavigate();
-
-  const onOverlayClick = () => {
-    toggleisClicked();
-    history("/");
-  };
-
-  const toggleisClicked = () => setIsClicked((prev) => !prev);
 
   useEffect(() => {
     if (!isGenresLoading) {
@@ -131,20 +125,31 @@ function Home() {
             <Overview>{topMoviesData?.results[0].overview}</Overview>
           </Banner>
           <SliderWrapper>
-            <Slider sliderTitle="최근 등록" sliderType="now_playing" />
-            <Slider sliderTitle="지금뜨는 콘텐츠" sliderType="popular" />
-            <Slider sliderTitle="개봉 예정" sliderType="upcoming" />
+            <Slider
+              sliderTitle="최근 등록"
+              sliderType="now_playing"
+              type="movie"
+            />
+            <Slider
+              sliderTitle="지금뜨는 콘텐츠"
+              sliderType="popular"
+              type="movie"
+            />
+            <Slider
+              sliderTitle="개봉 예정"
+              sliderType="upcoming"
+              type="movie"
+            />
           </SliderWrapper>
           <AnimatePresence>
             {bigMovieMatch ? (
               <>
                 <Overlay
                   initial={{ zIndex: 5 }}
-                  onClick={onOverlayClick}
-                  animate={{ opacity: 1, zIndex: 5 }}
+                  animate={{ opacity: 1, zIndex: 5, height: "100%" }}
                   exit={{ opacity: 0 }}
                 />
-                <ModalMovieInfo id={Number(clickedMovie)} />
+                <ModalMovieInfo id={Number(clickedMovie)} type="movie" />
               </>
             ) : null}
           </AnimatePresence>

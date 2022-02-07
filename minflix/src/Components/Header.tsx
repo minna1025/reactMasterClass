@@ -145,9 +145,11 @@ function Header() {
   }, [scrollY]);
 
   const history = useNavigate();
-  const { register, handleSubmit } = useForm<IForm>();
+  const { register, handleSubmit, setValue } = useForm<IForm>();
 
   const onValid = (data: IForm) => {
+    setValue("keyword", "");
+    toggleSearch();
     history(`/search?keyword=${data.keyword}`);
   };
 
@@ -197,6 +199,7 @@ function Header() {
           </motion.svg>
           <Input
             {...register("keyword", { required: true, minLength: 2 })}
+            type="text"
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
             transition={{ type: "linear" }}

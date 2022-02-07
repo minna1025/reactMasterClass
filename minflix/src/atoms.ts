@@ -1,5 +1,4 @@
 import { atom, selector } from "recoil";
-import { IGetTopMovieResult, getVideo, IGenres } from "./api";
 
 export const TopMovies = atom<any>({
   key: "topMovies",
@@ -14,7 +13,12 @@ export const TopMovieId = selector({
   },
 });
 
-export const Genres = atom<any>({
-  key: "genres",
+export const Genresmovie = atom<any>({
+  key: "genresMovie",
+  default: null,
+});
+
+export const GenresTv = atom<any>({
+  key: "genresTv",
   default: null,
 });
