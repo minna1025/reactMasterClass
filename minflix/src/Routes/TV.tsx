@@ -2,7 +2,14 @@ import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
 import { useQuery } from "react-query";
 import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { getGenres, getMovies, IGenres, IMovie, ITv } from "../api";
+import {
+  getGenres,
+  getMovies,
+  IGenres,
+  IMovie,
+  ITv,
+  IGetMoviesResult,
+} from "../api";
 import { makeImagePath } from "../libs";
 import ModalMovieInfo from "../Components/ModalMovieInfo";
 import Slider from "../Components/Slider";
@@ -88,10 +95,8 @@ const Overview = styled.p`
 
 function Tv() {
   const location = useLocation();
-  const { data: topTvData, isLoading: isTopTvLoading } = useQuery<ITv>(
-    "tvData",
-    () => getMovies("tv", "latest")
-  );
+  const { data: topTvData, isLoading: isTopTvLoading } =
+    useQuery<IGetMoviesResult>("tvData", () => getMovies("tv", "popular"));
 
   const { data: genresList, isLoading: isGenresLoading } = useQuery<IGenres>(
     ["genresTv", location],
@@ -116,20 +121,16 @@ function Tv() {
         <>
           <Banner>
             <img
-              src={makeImagePath(
-                topTvData?.backdrop_path
-                  ? topTvData?.backdrop_path
-                  : topTvData?.poster_path || ""
-              )}
+              src={makeImagePath(topTvData?.results[0]?.backdrop_path || "")}
             />
             {/* {topMoviesData?.results[0].id ? (
               <Trailer movieId={topMoviesData?.results[0].id} />
             ) : null} */}
-            <Title>{topTvData?.name}</Title>
-            <Overview>{topTvData?.overview}</Overview>
+            <Title>{topTvData?.results[0]?.name}</Title>
+            <Overview>{topTvData?.results[0]?.overview}</Overview>
           </Banner>
           <SliderWrapper>
-            <Slider sliderTitle="인기있는" sliderType="top_rated" type="tv" />
+            <Slider sliderTitle="별점 높은" sliderType="top_rated" type="tv" />
             <Slider
               sliderTitle="지금 상영중"
               sliderType="on_the_air"

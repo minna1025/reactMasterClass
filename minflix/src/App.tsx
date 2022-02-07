@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet";
 
 function App() {
   return (
-    <Router>
+    <Router basename={process.env.PUBLIC_URL}>
       <Helmet>
         <title>MINFLIX</title>
       </Helmet>
