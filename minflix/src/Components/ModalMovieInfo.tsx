@@ -33,7 +33,7 @@ const BigMovie = styled(motion.div)`
   left: 0;
   right: 0;
   margin: 0 auto;
-  padding-bottom: 20px;
+  padding-bottom: 1.25rem;
   border-radius: 10px;
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
@@ -51,7 +51,7 @@ const BigTitle = styled.h3`
   position: relative;
   top: -80px;
   color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
+  padding: 1.25rem;
   font-size: 40px;
   overflow-y: auto;
 `;
@@ -59,7 +59,7 @@ const BigTitle = styled.h3`
 const BigOverview = styled.div`
   position: relative;
   top: -80px;
-  padding: 20px;
+  padding: 1.25rem;
   line-height: 1.5;
   color: ${(props) => props.theme.white.lighter};
   border-bottom-left-radius: 10px;
@@ -99,7 +99,7 @@ const Infomation = styled.div`
 
     &:last-child {
       width: 25%;
-      margin-left: 20px;
+      margin-left: 1.25rem;
     }
   }
 `;
@@ -121,7 +121,7 @@ const SimilarMovies = styled.div`
   align-items: center;
   width: 100%;
   height: fit-content;
-  padding: 10px 20px;
+  padding: 10px 1.25rem;
 `;
 
 const Loader = styled.div`
@@ -134,8 +134,8 @@ const Loader = styled.div`
 const Box = styled.div`
   width: 30%;
   height: fit-content;
-  margin-bottom: 20px;
-  padding: 0 0 20px;
+  margin-bottom: 1.25rem;
+  padding: 0 0 1.25rem;
   border-radius: 5px;
   overflow: hidden;
 `;
@@ -143,7 +143,7 @@ const Box = styled.div`
 const SimilarInfo = styled.div`
   width: 100%;
   height: 80px;
-  padding: 10px 20px;
+  padding: 10px 1.25rem;
   background-color: ${(props) => props.theme.black.lighter};
 
   h4 {
@@ -163,9 +163,9 @@ const SimilarInfo = styled.div`
 
 const Close = styled.div`
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 1.25rem;
   cursor: pointer;
 `;
 

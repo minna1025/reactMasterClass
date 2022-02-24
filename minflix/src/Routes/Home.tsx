@@ -1,12 +1,11 @@
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useQuery } from "react-query";
-import { useLocation, useMatch, useNavigate } from "react-router-dom";
+import { useLocation, useMatch } from "react-router-dom";
 import styled from "styled-components";
 import { getGenres, getMovies, IGenres, IGetTopMovieResult } from "../api";
 import { makeImagePath } from "../libs";
 import ModalMovieInfo from "../Components/ModalMovieInfo";
 import Slider from "../Components/Slider";
-import Trailer from "../Components/Trailer";
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { Genresmovie } from "../atoms";
@@ -16,7 +15,7 @@ const Wrapper = styled.div`
   width: 100vw;
   overflow-x: hidden;
   background-color: black;
-  padding-bottom: 200px;
+  padding-bottom: 12rem;
 `;
 
 const Loader = styled.div`
@@ -33,7 +32,7 @@ const Banner = styled.div`
   flex-direction: column;
   justify-content: center;
   height: 100vh;
-  padding: 60px;
+  padding: 3.75rem;
   background: transparent;
 
   img {
@@ -55,22 +54,22 @@ const Banner = styled.div`
 const SliderWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: -170px;
+  margin-top: -10.65rem;
 
   > div {
-    margin: 3vw 0;
-    padding: 0 60px;
+    margin: 2.5rem 0;
+    padding: 0 3.75rem;
   }
 `;
 
 const Title = styled.h2`
   z-index: 1;
-  font-size: 68px;
-  margin-bottom: 20px;
+  font-size: 4.25rem;
+  margin-bottom: 1.25rem;
 `;
 
 const Overlay = styled(motion.div)`
-  z-index: 0;
+  z-index: 2;
   position: fixed;
   top: 0;
   left: 0;
@@ -82,7 +81,7 @@ const Overlay = styled(motion.div)`
 
 const Overview = styled.p`
   z-index: 1;
-  font-size: 20px;
+  font-size: 1.25rem;
   width: 50%;
 `;
 
