@@ -24,6 +24,7 @@
     "react-youtube": "^7.14.0",
     "recoil": "^0.6.1",
     "styled-components": "^5.3.3",
+    "styled-media-query": "^2.1.2",
     "typescript": "^4.5.5",
     "web-vitals": "^2.1.4"
   },

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import styled from "styled-components";
 import { makeImagePath } from "../libs";
 import { Rating } from "react-simple-star-rating";
+import { media } from "../media";
 
 const Box = styled(motion.div)<{ bgphoto: string }>`
   background-color: white;
@@ -12,7 +13,7 @@ const Box = styled(motion.div)<{ bgphoto: string }>`
   background-position: center center;
   border-radius: 5px;
   overflow: hidden;
-  height: 145px;
+  height: 9.063rem;
   font-size: 66px;
   cursor: pointer;
 
@@ -35,15 +36,15 @@ const Info = styled(motion.div)`
 
   h4 {
     text-align: left;
-    margin: 10px 20px;
-    font-size: 18px;
+    margin: 10px 1.25rem;
+    font-size: 1.2rem;
   }
 
   ul {
     display: flex;
     width: 100%;
     gap: 10px;
-    padding: 5px 20px;
+    padding: 5px 1.25rem;
   }
 
   li {
@@ -56,7 +57,7 @@ const RatingWrap = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  padding-left: 20px;
+  padding-left: 1.25rem;
   font-size: 12px;
 `;
 
@@ -71,13 +72,22 @@ interface IBoxProps {
   type: string;
 }
 
+let hoverScale = 1.3;
+
+media.lessThan("xl")`
+${(hoverScale = 1.2)}
+`;
+media.lessThan("lg")`
+${(hoverScale = 1.1)}
+`;
+
 const boxVariants = {
   normal: {
     scale: 1,
   },
 
   hover: {
-    scale: 1.3,
+    scale: hoverScale,
     y: -50,
     height: "250px",
 

@@ -73,7 +73,7 @@ const SliderWrapper = styled.div`
 const Title = styled.h2`
   z-index: 1;
   font-size: 68px;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 `;
 
 const Overlay = styled(motion.div)`
@@ -89,7 +89,7 @@ const Overlay = styled(motion.div)`
 
 const Overview = styled.p`
   z-index: 1;
-  font-size: 20px;
+  font-size: 1.25rem;
   width: 50%;
 `;
 

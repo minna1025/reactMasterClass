@@ -12,7 +12,7 @@ const Nav = styled(motion.nav)`
   position: fixed;
   top: 0;
   width: 100%;
-  padding: 20px 60px;
+  padding: 1.3rem 3.8rem;
   font-size: 14px;
   color: white;
 `;
@@ -23,13 +23,13 @@ const Col = styled.div`
 `;
 
 const Logo = styled(motion.svg)`
-  margin-right: 50px;
-  width: 95px;
-  height: 25px;
+  margin-right: 3.15rem;
+  width: 5.9rem;
+  height: 1.57rem;
   fill: ${(props) => props.theme.red};
 
   path {
-    stroke-width: 6px;
+    stroke-width: 0.4rem;
     stroke: white;
   }
 `;
@@ -44,7 +44,7 @@ const Item = styled.li`
   display: flex;
   justify-content: center;
   flex-direction: column;
-  margin-right: 20px;
+  margin-right: 1.25rem;
   color: ${(props) => props.theme.white.darker};
   transition: color 0.3s ease-in-out;
 
@@ -60,7 +60,7 @@ const Search = styled.form`
   color: white;
 
   svg {
-    height: 25px;
+    height: 1.3rem;
   }
 `;
 
@@ -81,9 +81,9 @@ const Input = styled(motion.input)`
   transform-origin: right center;
   position: absolute;
   right: 0;
-  padding: 5px 10px 5px 40px;
+  padding: 0.35rem 0.6rem 0.35rem 2.5rem;
   color: white;
-  font-size: 16px;
+  font-size: 1rem;
   background-color: transparent;
   border: 1px solid ${(props) => props.theme.white.lighter};
 `;

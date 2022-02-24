@@ -1,27 +1,21 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
-import { useRecoilValue, useResetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import {
-  getGenres,
-  getMovies,
-  IGenres,
-  IGetMoviesResult,
-  IGetTvResult,
-} from "../api";
+import { getMovies, IGenres, IGetMoviesResult } from "../api";
 import { GenresTv, Genresmovie } from "../atoms";
 import Slide from "./Slide";
+import { media } from "../media";
 
 const Wrapper = styled.div`
   position: relative;
-  min-height: 145px;
+  min-height: 9.063rem;
   height: 100%;
 
   > h2 {
-    font-size: 25px;
-    margin-bottom: 10px;
+    font-size: 1.56rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -36,9 +30,17 @@ const Row = styled(motion.div)`
   position: relative;
   display: grid;
   gap: 5px;
-  grid-template-columns: repeat(6, 1fr);
+  ${media.lessThan("lg")`
+    grid-template-columns: repeat(3, 1fr);
+  `}
+  ${media.between("lg", "xl")`
+    grid-template-columns: repeat(4, 1fr);
+  `}
+  ${media.greaterThan("xl")`
+    grid-template-columns: repeat(6, 1fr);
+  `}
   width: 100%;
-  height: 145px;
+  height: 9.063rem;
 `;
 
 const ButtonNext = styled(motion.div)`
@@ -48,11 +50,11 @@ const ButtonNext = styled(motion.div)`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 145px;
+  width: 2.5rem;
+  height: 9.063rem;
   cursor: pointer;
   bottom: 0;
-  font-size: 70px;
+  font-size: 4.2rem;
   background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3));
 `;
 
@@ -86,7 +88,17 @@ const NextVariants = {
   exite: { background: "transparent" },
 };
 
-const offset = 6;
+let offset = 6;
+
+media.lessThan("lg")`
+  ${(offset = 3)}
+`;
+media.between("lg", "xl")`
+  ${(offset = 4)}
+`;
+media.greaterThan("xl")`
+  ${(offset = 6)}
+`;
 
 function Slider({ sliderTitle, sliderType, type }: ISlider) {
   const { data, isLoading } = useQuery<IGetMoviesResult>(
